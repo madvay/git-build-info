@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 Advay Mengle.
+ * Copyright (c) 2015 by Advay Mengle.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * Original source: https://github.com/madvay/git-build-info/
  */
+
+package com.madvay.tools.build.gitbuildinfo
+
+import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.OutputDirectory
+import org.gradle.api.tasks.TaskAction
+import org.gradle.process.ExecResult
 
 import java.text.SimpleDateFormat
 
-class BuildStamp extends DefaultTask {
+/**
+ * Generates a BuildInfo.java file with information about the project
+ * and state of the Git repo at build time.
+ */
+class BuildStampTask extends DefaultTask {
 
     @Input
     String getVersion() { return project.version }
@@ -58,19 +69,33 @@ class BuildStamp extends DefaultTask {
     }
 
     /** Like "https://github.com/user/repo/tree/" */
-    @Input String repoBaseUrl
+    @Input
+    String repoBaseUrl = null
 
-    @Input String packageName
+    @Input
+    String packageName = null
 
-    @Input String srcDir = 'src-gen/main/java'
+    static final String SRC_GEN_DIR = 'build/buildStampSrcGenJava'
 
-    @OutputFile
+    @OutputDirectory
+    File getSrcGenDir() {
+        return project.file(SRC_GEN_DIR)
+    }
+
+    File getBuildStampPackageDir() {
+        return new File(srcGenDir, "${packageName.replace(".", "/")}")
+    }
+
     File getBuildStampFile() {
-        return project.file("$srcDir/${packageName.replace(".", "/")}/BuildInfo.java")
+        return new File(buildStampPackageDir, "BuildInfo.java")
     }
 
     @TaskAction
     void genFile() {
+        srcGenDir.deleteDir()
+        srcGenDir.mkdirs()
+        buildStampPackageDir.mkdirs()
+
         // TODO: Real java escaping.  Errors will be caught by compileJava.
         String javaVersion = version.replace('"', '\\"')
         String javaGitCommit = gitCommit.replace('"', '\\"')
@@ -80,6 +105,7 @@ class BuildStamp extends DefaultTask {
 
         String out = """
 // This is an auto-generated file.  Do not edit.
+// Generated using: https://github.com/madvay/git-build-info
 
 package $packageName;
 

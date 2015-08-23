@@ -1,0 +1,61 @@
+/*
+ * Copyright (c) 2015 by Advay Mengle.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+plugins {
+    id "com.gradle.plugin-publish" version "0.9.1"
+//    id "com.madvay.tools.build.gitbuildinfo" version "0.0.5-alpha"
+}
+
+apply plugin: 'groovy'
+apply plugin: 'java'
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.4'
+    distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile gradleApi()
+}
+
+group 'com.madvay.tools.build'
+version '0.0.6-alpha'
+
+// The configuration example below shows the minimum required properties
+// configured to publish your plugin to the plugin portal
+pluginBundle {
+    website = 'https://madvay.com/source/git-build-info'
+    vcsUrl = 'https://github.com/madvay/git-build-info'
+    description = 'Embed Git-based build info in your Gradle Java project.'
+    tags = ['gradle', 'git', 'build', 'info']
+
+    plugins {
+        mixc {
+            id = 'com.madvay.tools.build.gitbuildinfo'
+            displayName = 'git-build-info: Embed Git-based build info in your Gradle Java project.'
+        }
+    }
+}
+
+//buildStamp {
+//    packageName 'com.madvay.tools.build.gitbuildinfo'
+//    repoBaseUrl 'https://github.com/madvay/source/git-build-info'
+//}

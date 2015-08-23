@@ -25,4 +25,4 @@ sourceSets {
 ```
 
 ## License
-See [LICENSE](LICENSE).
+See [LICENSE](LICENSE) and [NOTICE](NOTICE).
