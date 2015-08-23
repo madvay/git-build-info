@@ -37,7 +37,7 @@ dependencies {
 }
 
 group 'com.madvay.tools.build'
-version '0.1.1-alpha-SNAPSHOT'
+version '0.1.1-alpha'
 
 // The configuration example below shows the minimum required properties
 // configured to publish your plugin to the plugin portal
@@ -57,5 +57,5 @@ pluginBundle {
 
 buildStamp {
     packageName 'com.madvay.tools.build.gitbuildinfo'
-    repoBaseUrl 'https://github.com/madvay/source/git-build-info'
+    repoBaseUrl 'https://github.com/madvay/source/git-build-info/'
 }
