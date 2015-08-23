@@ -8,7 +8,7 @@ In the build.gradle file:
 
 ```gradle
 plugins {
-    id "com.madvay.tools.build.gitbuildinfo" version "0.1.0-alpha"
+    id "com.madvay.tools.build.gitbuildinfo" version "0.1.1-alpha"
 }
 
 buildStamp {
