@@ -57,5 +57,5 @@ pluginBundle {
 
 buildStamp {
     packageName 'com.madvay.tools.build.gitbuildinfo'
-    repoBaseUrl 'https://github.com/madvay/source/git-build-info/tree/'
+    repoBaseUrl 'https://github.com/madvay/git-build-info/tree/'
 }
