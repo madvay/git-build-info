@@ -17,7 +17,7 @@
 
 plugins {
     id "com.gradle.plugin-publish" version "0.9.1"
-//    id "com.madvay.tools.build.gitbuildinfo" version "0.0.5-alpha"
+    id "com.madvay.tools.build.gitbuildinfo" version "0.0.6-alpha"
 }
 
 apply plugin: 'groovy'
@@ -37,7 +37,7 @@ dependencies {
 }
 
 group 'com.madvay.tools.build'
-version '0.0.6-alpha'
+version '0.0.7-alpha-SNAPSHOT'
 
 // The configuration example below shows the minimum required properties
 // configured to publish your plugin to the plugin portal
@@ -55,7 +55,7 @@ pluginBundle {
     }
 }
 
-//buildStamp {
-//    packageName 'com.madvay.tools.build.gitbuildinfo'
-//    repoBaseUrl 'https://github.com/madvay/source/git-build-info'
-//}
+buildStamp {
+    packageName 'com.madvay.tools.build.gitbuildinfo'
+    repoBaseUrl 'https://github.com/madvay/source/git-build-info'
+}
