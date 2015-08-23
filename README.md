@@ -1,6 +1,7 @@
 # git-build-info
 Gradle plugin to incorporate Git repo info into your build
 
+[![Build Status](https://travis-ci.org/madvay/git-build-info.svg?branch=master)](https://travis-ci.org/madvay/git-build-info)
 
 ## Usage
 In the build.gradle file:
