@@ -105,7 +105,7 @@ class BuildStampTask extends DefaultTask {
 
         String out = """
 // This is an auto-generated file.  Do not edit.
-// Generated using: https://github.com/madvay/git-build-info
+// Generated using: https://madvay.com/source/git-build-info
 
 package $packageName;
 
