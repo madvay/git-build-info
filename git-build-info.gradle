@@ -1,0 +1,94 @@
+/*
+ * Copyright (c) 2015 Advay Mengle.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import java.text.SimpleDateFormat
+
+class BuildStamp extends DefaultTask {
+
+    @Input
+    String getVersion() { return project.version }
+
+    @Input
+    String getGitCommit() {
+        ByteArrayOutputStream stdout = new ByteArrayOutputStream()
+        ExecResult r = project.exec {
+            executable 'git'
+            // Only output is the commit SHA.
+            args 'rev-parse', 'HEAD'
+
+            setStandardOutput stdout
+        }
+        r.assertNormalExitValue()
+        return stdout.toString().trim()
+    }
+
+    @Input
+    boolean getGitIsClean() {
+        ByteArrayOutputStream stdout = new ByteArrayOutputStream()
+        ExecResult r = project.exec {
+            executable 'git'
+            args 'status'
+
+            setStandardOutput stdout
+        }
+        r.assertNormalExitValue()
+        return stdout.toString().contains('nothing to commit, working directory clean')
+    }
+
+    @Input
+    String getTimestamp() {
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd'T'HHmmssZ")
+        fmt.setTimeZone(TimeZone.getTimeZone('UTC'))
+        return fmt.format(new Date())
+    }
+
+    /** Like "https://github.com/user/repo/tree/" */
+    @Input String repoBaseUrl
+
+    @Input String packageName
+
+    @Input String srcDir = 'src-gen/main/java'
+
+    @OutputFile
+    File getBuildStampFile() {
+        return project.file("$srcDir/${packageName.replace(".", "/")}/BuildInfo.java")
+    }
+
+    @TaskAction
+    void genFile() {
+        // TODO: Real java escaping.  Errors will be caught by compileJava.
+        String javaVersion = version.replace('"', '\\"')
+        String javaGitCommit = gitCommit.replace('"', '\\"')
+        String javaUrl = (repoBaseUrl + gitCommit).replace('"', '\\"')
+        String javaTimestamp = timestamp.replace('"', '\\"')
+        String javaGitIsClean = gitIsClean ? 'true' : 'false'
+
+        String out = """
+// This is an auto-generated file.  Do not edit.
+
+package $packageName;
+
+public class BuildInfo {
+    public static final String VERSION = "$javaVersion";
+    public static final String GIT_COMMIT = "$javaGitCommit";
+    public static final String URL = "$javaUrl";
+    public static final String TIMESTAMP = "$javaTimestamp";
+    public static final boolean GIT_IS_CLEAN = $javaGitIsClean;
+}
+"""
+        buildStampFile.write(out, "UTF-8")
+    }
+}
