@@ -14,7 +14,8 @@ plugins {
 buildStamp {
     // The git commit SHA will be appended to this url to generate the final url.
     repoBaseUrl "https://github.com/USER/REPO/tree/"
-    // BuildInfo.java will be added under this package.
+    // BuildInfo.java will be added under this package, in a
+    // generated build/ directory.
     packageName "com.example"
 }
 ```
@@ -23,6 +24,11 @@ This plugin eats its own dogfood, so look at [build.gradle](build.gradle) to
 see how we use it.
 
 ## Sample BuildInfo.java
+Most of the variables added are straightforward.
+`GIT_IS_CLEAN` is true iff you have no changes in your git working directory (or
+your git index).  This means the state of the code can be fully specified by the
+`GIT_COMMIT` in your local repository.
+
 ```java
 
 // This is an auto-generated file.  Do not edit.
