@@ -35,8 +35,9 @@ class GitBuildInfoPlugin implements Plugin<Project> {
             tasks.create('verifyCleanGit', VerifyCleanGitTask)
             compileJava.dependsOn('buildStamp')
             tasks.all {
-                // If you are publishing plugins, you should have a clean git repo.
-                if (it.name == 'publishPlugins') {
+                // If you are publishing plugins or to Maven,
+                // you should have a clean git repo.
+                if (it.name == 'publishPlugins' || it.startsWith('generatePomFileFor') {
                     it.dependsOn('verifyCleanGit')
                 }
             }
