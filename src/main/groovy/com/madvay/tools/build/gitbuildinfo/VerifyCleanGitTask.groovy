@@ -24,6 +24,9 @@ class VerifyCleanGitTask extends DefaultTask {
 
     @TaskAction
     void assertCleanGit() {
-        assert project.buildStamp.gitIsClean
+        assert project.buildStamp.gitIsClean :
+            'Your git working directory should be clean'
+        assert !project.version.contains('SNAPSHOT') :
+            'You should specify an official release version number, not a SNAPSHOT'
     }
 }
