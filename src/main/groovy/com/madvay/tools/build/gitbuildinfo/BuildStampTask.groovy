@@ -118,5 +118,11 @@ public class BuildInfo {
 }
 """
         buildStampFile.write(out, "UTF-8")
+
+        project.ext['gitBuildCommit'] = javaGitCommit
+        project.ext['gitBuildTimestamp'] = javaTimestamp
+        project.ext['gitBuildIsClean'] = javaGitIsClean
+        project.ext['gitBuildVersion'] = javaVersion
+        project.ext['gitBuildUrl'] = javaUrl
     }
 }
