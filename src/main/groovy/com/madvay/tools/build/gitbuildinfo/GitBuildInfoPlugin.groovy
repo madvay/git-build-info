@@ -37,7 +37,7 @@ class GitBuildInfoPlugin implements Plugin<Project> {
             tasks.all {
                 // If you are publishing plugins or to Maven,
                 // you should have a clean git repo.
-                if (it.name == 'publishPlugins' || it.startsWith('generatePomFileFor')) {
+                if (it.name == 'publishPlugins' || it.name.startsWith('generatePomFileFor')) {
                     it.dependsOn('verifyCleanGit')
                 }
             }
