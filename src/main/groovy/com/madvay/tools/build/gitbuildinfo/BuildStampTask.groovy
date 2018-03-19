@@ -58,7 +58,7 @@ class BuildStampTask extends DefaultTask {
             setStandardOutput stdout
         }
         r.assertNormalExitValue()
-        return stdout.toString().contains('nothing to commit, working directory clean')
+        return stdout.toString() ==~ /nothing to commit, working (directory|tree) clean/
     }
 
     @Input
